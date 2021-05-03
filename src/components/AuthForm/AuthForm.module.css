@@ -45,6 +45,11 @@
   border: none;
   background: #fafafa;
   padding-left: 30px;
+  transition: transform 1s;
+}
+
+.gBtn:active {
+  box-shadow: inset 1px 1px 4px;
 }
 
 .btnWrapper {
@@ -52,6 +57,15 @@
   display: flex;
   align-items: center;
   margin-top: 20px;
+  transition: transform ease-in-out 0.5s;
+}
+
+.btnWrapper:hover {
+  transform: scale(0.98);
+}
+
+.btnWrapper:hover .gLogo {
+  transform: scale(1.25) translate(-40%, 0);
 }
 
 .btnWrapperBottom {
@@ -64,6 +78,7 @@
 }
 
 .gLogo {
+  transition: transform 1s;
   height: 18px;
   width: 18px;
   position: absolute;

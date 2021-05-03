@@ -35,26 +35,28 @@ function App() {
     <BrowserRouter>
       <Header />
       <Suspense fallback={<Loader />}>
-        <Switch>
-          <PrivateRoute exact path={routes.USEFUL_INFO_VIEW}>
-            <UseFulInfoView />
-          </PrivateRoute>
-          <PublicRoute exact path={routes.CONTACTS_VIEW}>
-            <ContactsView />
-          </PublicRoute>
-          <PublicRoute exact path={routes.AUTH_VIEW} restricted>
-            <AuthView />
-          </PublicRoute>
-          <PrivateRoute exact path={routes.RESULT_VIEW}>
-            <Results />
-          </PrivateRoute>
-          <PrivateRoute exact path={routes.MAIN_VIEW}>
-            <MainView />
-          </PrivateRoute>
-          <PrivateRoute exact path={routes.TEST_VIEW}>
-            <TestPage />
-          </PrivateRoute>
-        </Switch>
+        <div className="contentWrapper">
+          <Switch>
+            <PrivateRoute exact path={routes.USEFUL_INFO_VIEW}>
+              <UseFulInfoView />
+            </PrivateRoute>
+            <PublicRoute exact path={routes.CONTACTS_VIEW}>
+              <ContactsView />
+            </PublicRoute>
+            <PublicRoute exact path={routes.AUTH_VIEW} restricted>
+              <AuthView />
+            </PublicRoute>
+            <PrivateRoute exact path={routes.RESULT_VIEW}>
+              <Results />
+            </PrivateRoute>
+            <PrivateRoute exact path={routes.MAIN_VIEW}>
+              <MainView />
+            </PrivateRoute>
+            <PrivateRoute exact path={routes.TEST_VIEW}>
+              <TestPage />
+            </PrivateRoute>
+          </Switch>
+        </div>
       </Suspense>
       <Footer />
     </BrowserRouter>

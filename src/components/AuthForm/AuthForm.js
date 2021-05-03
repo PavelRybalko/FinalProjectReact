@@ -6,6 +6,7 @@ import gIcon from '../../assets/icons/google-logo.png';
 import Modal from '../Modal';
 import { authSelectors } from '../../redux/auth';
 import { getActiveElement } from 'formik';
+
 export default function AuthForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -30,25 +31,35 @@ export default function AuthForm() {
         return;
     }
   };
+
   const reset = () => {
     setEmail('');
     setPassword('');
   };
+
+  const checkEmailAndPassword = (email, password) => {
+    if (!email.trim() && !password.trim()) {
+      return alert('Please write email and password!');
+    }
+    return true;
+  };
+
   const handleSignIn = event => {
     event.preventDefault();
-    dispatch(authOperations.logIn({ email, password }));
+    if (checkEmailAndPassword(email, password)) {
+      dispatch(authOperations.logIn({ email, password }));
+    }
     reset();
   };
+
   const handleSignUp = event => {
     event.preventDefault();
-    dispatch(authOperations.register({ email, password }));
+    if (checkEmailAndPassword(email, password)) {
+      dispatch(authOperations.register({ email, password }));
+    }
     reset();
   };
-  // const makeSubmit = event => {
-  //   event.preventDefault();
-  //   dispatch(authOperations.register({ email, password }));
-  //   reset();
-  // };
+
   return (
     <div className={s.forma}>
       <p className={s.para}>
@@ -59,8 +70,8 @@ export default function AuthForm() {
           <button className={s.gBtn} type="submit">
             Google
           </button>
+          <img className={s.gLogo} src={gIcon} alt={'gIcon'} />
         </a>
-        <img className={s.gLogo} src={gIcon} alt={'gIcon'} />
       </div>
       <p className={s.secondPara}>
         Or login to our app using e-mail and password:
@@ -80,7 +91,7 @@ export default function AuthForm() {
         <label>
           <input
             className={s.input}
-            type="text"
+            type="password"
             name="password"
             placeholder="Password"
             onChange={handleChange}
@@ -90,10 +101,10 @@ export default function AuthForm() {
         </label>
         <div className={s.btnWrapperBottom}>
           <button className={s.regBtn} onClick={handleSignIn}>
-            Sign In
+            Log in
           </button>
           <button data-auth="reg" className={s.regBtn} onClick={handleSignUp}>
-            Sign Up
+            Register
           </button>
         </div>
       </form>
