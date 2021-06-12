@@ -1,12 +1,17 @@
 import React, { useEffect, lazy, Suspense } from 'react';
-import { useDispatch } from 'react-redux';
+import { ToastContainer } from 'react-toastify';
+import { useDispatch, useSelector } from 'react-redux';
 import routes from './routes';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import { BrowserRouter, Switch } from 'react-router-dom';
+import 'react-toastify/dist/ReactToastify.css';
+import { authOperations } from './redux/auth';
+import { authSelectors } from './redux/auth/';
 import Header from './components/Header/';
 import Loader from './components/Loader';
 import Footer from './components/Footer/';
-import PrivateRoute from './components/Routes/PrivateRoute';
-import PublicRoute from './components/Routes/PublicRoute';
+import GoogleLogin from './components/GoogleLogin/';
+import { PublicRoute, PrivateRoute } from './components/Routes';
+
 const MainView = lazy(() =>
   import('./views/MainView' /*webpackChunkName: "MainView"*/),
 );
@@ -26,17 +31,28 @@ const AuthView = lazy(() =>
   import('./views/AuthView' /*webpackChunkName: "AuthView"*/),
 );
 function App() {
-  // const dispatch = useDispatch();
-  // useEffect(() => {
+  const dispatch = useDispatch();
+  const accessToken = useSelector(authSelectors.getToken);
+  const isLoggedIn = useSelector(authSelectors.getIsLoggedIn);
+  const refreshToken = localStorage.getItem('refreshToken');
 
-  //   dispatch(authOperations.fetchCurrentUser());
-  // }, []);
+  useEffect(() => {
+    if (!refreshToken) return;
+
+    !isLoggedIn && dispatch(authOperations.fetchCurrentUser(accessToken));
+  }, [dispatch, refreshToken, accessToken, isLoggedIn]);
+
   return (
     <BrowserRouter>
       <Header />
       <Suspense fallback={<Loader />}>
-        <div className="contentWrapper">
+        <main className="contentWrapper">
           <Switch>
+            <PublicRoute exact path={routes.GOOGLE_LOGIN} restricted>
+              <GoogleLogin>
+                <Loader />
+              </GoogleLogin>
+            </PublicRoute>
             <PrivateRoute exact path={routes.USEFUL_INFO_VIEW}>
               <UseFulInfoView />
             </PrivateRoute>
@@ -56,9 +72,10 @@ function App() {
               <TestPage />
             </PrivateRoute>
           </Switch>
-        </div>
+        </main>
       </Suspense>
       <Footer />
+      <ToastContainer />
     </BrowserRouter>
   );
 }

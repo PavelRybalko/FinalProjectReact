@@ -1,18 +1,53 @@
-import { createStore, applyMiddleware } from 'redux';
-import thunk from 'redux-thunk';
-import { persistStore } from 'redux-persist';
-import { composeWithDevTools } from 'redux-devtools-extension';
-import { rootReducer } from '../redux/rootReducer/';
+import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
+import logger from 'redux-logger';
+import storage from 'redux-persist/lib/storage';
+import {
+  persistStore,
+  persistReducer,
+  FLUSH,
+  REHYDRATE,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER,
+} from 'redux-persist';
+import { questionsReducer } from './questions';
+import { authReducer } from './auth';
 
-const composeEnhancers = composeWithDevTools({
-  // Specify here name, actionsBlacklist, actionsCreators and other options
+const middleware = [
+  ...getDefaultMiddleware({
+    serializableCheck: {
+      ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+    },
+  }),
+  logger,
+];
+
+const tokenPersistConfig = {
+  key: 'auth',
+  storage,
+  whitelist: ['accessToken'],
+};
+
+const questionsPersistConfig = {
+  key: 'questions',
+  storage,
+  whitelist: 'nameTest',
+};
+
+const store = configureStore({
+  reducer: {
+    // answers: questionsReducer.resultQuestionsReducer,
+    // nameTest: questionsReducer.setNameReducer,
+    // questions: questionsReducer.setDataQuestions,
+    // result: questionsReducer.setQuestionsResult,
+    questions: persistReducer(questionsPersistConfig, questionsReducer),
+    auth: persistReducer(tokenPersistConfig, authReducer),
+  },
+  devTools: process.env.NODE_ENV === 'development',
+  middleware,
 });
-const store = createStore(
-  rootReducer,
-  composeEnhancers(
-    applyMiddleware(thunk),
-    // other store enhancers if any
-  ),
-);
+
 const persistor = persistStore(store);
+
 export { store, persistor };

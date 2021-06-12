@@ -1,77 +1,69 @@
-import { createReducer, combineReducers } from '@reduxjs/toolkit';
+import { createReducer, combineReducers, createSlice } from '@reduxjs/toolkit';
+import authOperations from './auth-operations';
 
-import {
-  registerUserRequest,
-  registerUserSuccess,
-  registerUserError,
-  loginUserRequest,
-  loginUserSuccess,
-  loginUserError,
-  logoutUserRequest,
-  logoutUserSuccess,
-  logoutUserError,
-  fetchCurrentUserRequest,
-  fetchCurrentUserSuccess,
-  fetchCurrentUserError,
-} from './auth-actions';
+const initialState = { name: null, email: null, avatarURL: null };
 
-const initialState = {
-  user: { name: null, email: null, avatarURL: null },
-  token: null,
-  isLoggedIn: false,
-};
-
-const registration = createReducer(initialState, {
-  [registerUserSuccess]: (_, { payload }) => {
+const user = createReducer(initialState, {
+  [authOperations.register.fulfilled]: (_, { payload }) => payload.user,
+  [authOperations.fetchCurrentUser.fulfilled]: (_, { payload }) => payload.user,
+  [authOperations.logIn.fulfilled]: (_, { payload }) => {
     return payload.user;
   },
-  [loginUserSuccess]: (state, { payload }) => {
-    return payload.user;
-  },
-  [logoutUserSuccess]: () => null,
-  // [fetchCurrentUserSuccess]: (_, { payload }) => payload.auth,
+  [authOperations.logOut.fulfilled]: () => null,
 });
 
-const token = createReducer(null, {
-  // [registerUserSuccess]: (_, { payload }) => payload.token,
-  [loginUserSuccess]: (_, { payload }) => {
-    return payload.token;
+const accessToken = createReducer(null, {
+  [authOperations.logIn.fulfilled]: (_, { payload }) => {
+    return payload.accessToken;
   },
-  [fetchCurrentUserError]: () => null,
-  [logoutUserSuccess]: () => null,
+  [authOperations.updateTokenByCode.fulfilled]: (_, { payload }) => {
+    debugger;
+    return payload.accessToken;
+  },
+  // [authOperations.fetchCurrentUser.fulfilled]: (_, { payload }) => {
+  //   debugger;
+  //   console.log('token reducer -', payload);
+  //   return payload?.accessToken;
+  // },
+  [authOperations.updateTokenByCode.rejected]: () => null,
+  [authOperations.fetchCurrentUser.rejected]: () => null,
+  [authOperations.logOut.fulfilled]: () => null,
 });
 
 const isLoggedIn = createReducer(false, {
-  [loginUserSuccess]: () => true,
-  [fetchCurrentUserSuccess]: () => true,
-  [fetchCurrentUserRequest]: () => true,
-
-  [loginUserError]: () => false,
-  [logoutUserSuccess]: () => false,
-  [fetchCurrentUserError]: () => false,
+  [authOperations.logIn.fulfilled]: () => true,
+  [authOperations.logIn.rejected]: () => false,
+  [authOperations.logOut.fulfilled]: () => false,
+  [authOperations.fetchCurrentUser.fulfilled]: () => true,
+  [authOperations.fetchCurrentUser.rejected]: () => false,
+  [authOperations.updateTokenByCode.rejected]: () => false,
 });
 
 const loading = createReducer(false, {
-  [registerUserRequest]: () => true,
-  [registerUserSuccess]: () => false,
-  [registerUserError]: () => false,
+  [authOperations.register.pending]: () => true,
+  [authOperations.register.fulfilled]: () => false,
+  [authOperations.register.rejected]: () => false,
 
-  [loginUserRequest]: () => true,
-  [loginUserSuccess]: () => false,
-  [loginUserError]: () => false,
+  [authOperations.logIn.pending]: () => true,
+  [authOperations.logIn.fulfilled]: () => false,
+  [authOperations.logIn.rejected]: () => false,
 
-  [logoutUserRequest]: () => true,
-  [logoutUserSuccess]: () => false,
-  [logoutUserError]: () => false,
+  [authOperations.logOut.pending]: () => true,
+  [authOperations.logOut.fulfilled]: () => false,
+  [authOperations.logOut.rejected]: () => false,
 
-  [fetchCurrentUserRequest]: () => true,
-  [fetchCurrentUserSuccess]: () => false,
-  [fetchCurrentUserError]: () => false,
+  [authOperations.fetchCurrentUser.pending]: () => true,
+  [authOperations.fetchCurrentUser.fulfilled]: () => false,
+  [authOperations.fetchCurrentUser.rejected]: () => false,
+
+  [authOperations.updateTokenByCode.pending]: () => true,
+  [authOperations.updateTokenByCode.fulfilled]: () => false,
+  [authOperations.updateTokenByCode.rejected]: () => false,
 });
 
 const authReducer = combineReducers({
-  registration,
-  token,
+  user,
+  accessToken,
   isLoggedIn,
   loading,
 });
@@ -84,3 +76,15 @@ export default authReducer;
 // [loginUserError]: () => false,
 // [logoutUserSuccess]: () => false,
 // });
+
+// const authSlice = createSlice({
+//   name: 'auth',
+//   initialState,
+//   extraReducers: {
+//     [authOperations.register.fulfilled]: (_, { payload }) => {
+//       state.user = payload.user;
+//     },
+//   },
+// });
+
+// export default authSlice.reducer;

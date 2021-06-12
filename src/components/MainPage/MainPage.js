@@ -9,11 +9,12 @@ const BUTTON_COLOR = ['orange', 'blue'];
 
 const MainPage = () => {
   const dispatch = useDispatch();
+
   const handleSetReduxQuery = e => {
     const {
       currentTarget: { dataset },
     } = e;
-    if (dataset.nameTest) {
+    if (dataset?.nameTest) {
       return dispatch(actionSetNameTest(dataset.nameTest));
     }
   };
@@ -31,14 +32,14 @@ const MainPage = () => {
           <ul className={s.mainPage_buttonItems}>
             <MainButton
               onClick={handleSetReduxQuery}
-              dataSet="technic"
+              dataSet="tech-questions"
               text={TEXT_BUTTON[0]}
               bg={BUTTON_COLOR[1]}
             />
 
             <MainButton
               onClick={handleSetReduxQuery}
-              dataSet="theoretical"
+              dataSet="theory-questions"
               text={TEXT_BUTTON[1]}
               bg={BUTTON_COLOR[0]}
             />

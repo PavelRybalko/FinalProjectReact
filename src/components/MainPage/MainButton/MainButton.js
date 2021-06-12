@@ -1,4 +1,4 @@
-import React, { lazy } from 'react';
+import React from 'react';
 import T from 'prop-types';
 import { Link } from 'react-router-dom';
 import routes from '../../../routes';
@@ -7,8 +7,9 @@ import s from './MainButton.module.css';
 
 const MainButton = ({ text, bg, onClick, dataSet }) => {
   return (
-    <li className={s.listButton} onClick={onClick} data-name-test={dataSet}>
+    <li className={s.listButton}>
       <Link
+        data-name-test={dataSet}
         onClick={onClick}
         to={routes.TEST_VIEW}
         className={bg === 'orange' ? s.buttonOrange : s.buttonBlue}

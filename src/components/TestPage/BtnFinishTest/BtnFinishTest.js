@@ -6,7 +6,7 @@ const BtnFinishTest = ({ checkData }) => {
   // const handleTryTest = e => {
   //   console.log(`go to result view`);
   // };
-  console.log(checkData);
+  // console.log(checkData);
 
   return checkData ? (
     <div className={s.testPage__btnFinish}>

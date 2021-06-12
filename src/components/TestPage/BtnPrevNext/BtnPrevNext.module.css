@@ -8,10 +8,9 @@
   display: none;
 }
 
-.testPage__btnPrev,
-.testPage__btnNext {
+.testPage__btn {
   border: none;
-  font-family: Montserrat;
+  font-family: 'MontserratMedium';
   font-style: normal;
   font-weight: 500;
   font-size: 12px;
@@ -26,8 +25,7 @@
   color: #000;
 }
 
-.testPage__btnPrev,
-.testPage__btnNext:hover {
+.testPage__btn:hover {
   background-color: #ffa500;
   color: #fff;
 }
@@ -39,16 +37,19 @@
 }
 
 .arrowLeft {
-  transform: rotate(180deg);
-  fill: #fff;
+  /* transform: rotate(180deg); */
+  transform: scale(-1, 1);
 }
 
-.disactive {
+button.disactive {
+  /* display:none; */
+  visibility: hidden;
+  cursor: not-allowed;
   background-color: #fff;
   border: none;
+  color: #000;
   width: 56px;
   height: 34px;
-  color: #000;
   fill: #000;
 }
 
@@ -57,23 +58,19 @@
     display: inline-block;
   }
 
-  .testPage__btnPrev,
-  .testPage__btnNext {
+  .testPage__btn {
     width: 210px;
     height: 34px;
     justify-content: space-around;
   }
 
-  .arrowLeft:hover {
-    fill: #000;
-  }
-
-  .arrowRight:hover {
+  .testPage__btn:hover .arrowLeft,
+  .testPage__btn:hover .arrowRight {
     fill: #fff;
   }
 
-  .disactive {
+  /* .disactive {
     width: 210px;
     height: 34px;
-  }
+  } */
 }

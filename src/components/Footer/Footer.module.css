@@ -24,6 +24,10 @@
   text-decoration: underline;
 }
 
+.link:hover {
+  color: #ff6b09;
+}
+
 @media (min-width: 768px) {
   .footer {
     padding: 19px 0;

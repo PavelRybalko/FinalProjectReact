@@ -12,7 +12,7 @@ import { useState, useEffect } from 'react';
 
 const TestPage = () => {
   const dispatch = useDispatch();
-  const { answers, nameTest } = useSelector(state => state);
+  const { answers, nameTest } = useSelector(state => state.questions);
   const [data, setData] = useState(null);
   const [i, setI] = useState(null);
   const [activePrev, setActivePrev] = useState(false);
@@ -27,13 +27,12 @@ const TestPage = () => {
       try {
         const { data } = await getQuestions(nameTest);
         setData(data);
-        console.log(data, `data`);
       } catch (error) {
         console.error(error);
       }
     }
     getAnswers();
-  }, []);
+  }, [nameTest]);
 
   const handleTestList = e => {
     const {
@@ -43,9 +42,9 @@ const TestPage = () => {
 
     const check = answers.some(el => el.answer !== undefined);
     const newAnswer = {
-      answerId: Number(dataset.indexAnswer),
+      questionId: Number(dataset.indexAnswer),
       answer: dataset.answer,
-      in: dataset.index,
+      idx: dataset.index,
     };
     const allLi = document.getElementsByName('check');
     allLi.forEach(item => {
@@ -75,11 +74,11 @@ const TestPage = () => {
       allLi.forEach(item => {
         item.classList.remove(s.item__checked);
       });
-      if (i > 10) {
+      if (i === 10) {
+        setI(() => i + 1);
         return setActiveNext(false);
       }
       setI(() => i + 1);
-      setActiveNext(true);
       setActivePrev(true);
       return;
     }
@@ -87,9 +86,11 @@ const TestPage = () => {
       allLi.forEach(item => {
         item.classList.remove(s.item__checked);
       });
-      if (i === 0) {
-        return setActivePrev(false);
+      if (i === 1) {
+        setActivePrev(false);
+        return setI(() => i - 1);
       }
+      setActiveNext(true);
       setActivePrev(true);
       return setI(() => i - 1);
     }
@@ -105,7 +106,7 @@ const TestPage = () => {
               <span className={s.testPage__testNameText}>
                 {' '}
                 [ Testing <br />
-                {nameTest}_ ]{' '}
+                {nameTest === 'theory-questions' ? 'theoretical' : 'technic'}_ ]{' '}
               </span>
             </h2>
             <BtnFinishTest checkData={answers.length === 12 ? true : false} />
@@ -122,7 +123,7 @@ const TestPage = () => {
 
             <QuestionsCard
               counter={i}
-              handelSet={handleTestList}
+              handleSet={handleTestList}
               apiData={data}
               currentAnswer={answers}
             />

@@ -1,9 +1,9 @@
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import { useState, useCallback, useEffect } from 'react';
 
 import routes from '../../routes';
-import { authOperations } from '../../redux/auth';
+import { authOperations, authSelectors } from '../../redux/auth';
 import { ReactComponent as SignOutIcon } from '../../assets/icons/svg/signOut.svg';
 import { ReactComponent as AddIcon } from '../../assets/icons/svg/checkmark.svg';
 import defaultAvatar from '../../assets/images/default-avatar.png';
@@ -11,7 +11,7 @@ import styles from './UserInfo.module.css';
 
 function UserInfo({ onOpenMobileMenu }) {
   const dispatch = useDispatch();
-  // const email = useSelector(authSelectors.getUseremail);
+  const userName = useSelector(authSelectors.getUserName);
   const avatar = defaultAvatar;
   const [showModal, setShowModal] = useState(false);
   const [image, setImage] = useState('');
@@ -142,7 +142,7 @@ function UserInfo({ onOpenMobileMenu }) {
             </form>
           </div>
         </div>
-        <span className={styles.name}>{newName || 'test@gmail.com'} </span>
+        <span className={styles.name}>{newName || userName} </span>
       </div>
 
       <NavLink to={routes.AUTH_VIEW} onClick={() => onOpenMobileMenu(false)}>

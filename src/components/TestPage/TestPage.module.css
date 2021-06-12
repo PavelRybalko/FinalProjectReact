@@ -1,28 +1,33 @@
 .item__checked {
   position: relative;
 }
+
 .item__checked::before {
   position: absolute;
   content: '';
   display: block;
   left: -26px;
-  top: 6px;
-  width: 12px;
-  height: 12px;
+  top: 2px;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
-  background-color: orange;
+  background-color: #ff6b09;
   z-index: 5;
 }
+
 .testPage__titleQuestions {
   text-align: center;
   margin-bottom: 30px;
 }
+
 .testPage {
+  min-height: calc(100vh - 124px);
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  padding-top: 20px;
+  padding-top: 40px;
   padding-bottom: 40px;
+  background-color: #f5f6fb;
 }
 
 .container {
@@ -50,7 +55,7 @@
   align-self: center;
   width: 130px;
   height: 36px;
-  font-family: Montserrat;
+  font-family: 'MontserratMedium', sans-serif;
   font-style: normal;
   font-weight: 500;
   font-size: 14px;
@@ -74,20 +79,38 @@
 .testPage__questionsNumber {
   display: flex;
   justify-content: center;
-  font-family: Montserrat;
+  font-family: 'MontserratMedium', sans-serif;
   font-style: normal;
-  font-weight: 700;
+  font-weight: 500;
   font-size: 10px;
   line-height: 12px;
   text-align: center;
   letter-spacing: 0.02em;
-  text-transform: uppercase;
+  /* text-transform: uppercase; */
   color: #555555;
   margin-bottom: 20px;
 }
 
 .testPage__currentQuestionNum {
+  font-family: 'MontserratBold', sans-serif;
   color: #ff6b09;
+  font-weight: 700;
+}
+
+.testPage__titleQuestions {
+  font-family: 'MontserratBold', sans-serif;
+  font-weight: 700;
+  font-size: 22px;
+  line-height: 30px;
+  margin-bottom: 30px;
+}
+
+.testPage__titleQuestions:after {
+  content: '';
+  display: block;
+  margin: 30px auto 0;
+  width: 320px;
+  border-bottom: 1px solid rgba(0, 18, 47, 0.15);
 }
 
 @media (min-width: 768px) {

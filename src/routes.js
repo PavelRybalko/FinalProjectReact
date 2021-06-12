@@ -1,4 +1,5 @@
 const routes = {
+  GOOGLE_LOGIN: '/google-auth',
   AUTH_VIEW: '/auth',
   MAIN_VIEW: '/',
   TEST_VIEW: '/test',

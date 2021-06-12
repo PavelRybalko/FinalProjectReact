@@ -12,14 +12,14 @@ import { actionResetAnswers } from '../../redux/questions/questions-actions';
 
 const Results = () => {
   const { answers, nameTest } = useSelector(state => state);
-  const [dataAnswers, setSetaAnswers] = useState(null);
+  const [dataAnswers, setDataAnswers] = useState(null);
   const dispatch = useDispatch();
 
   useEffect(() => {
     async function getAnswers() {
       try {
         const { data } = await postUserAnswers(nameTest, answers);
-        await setSetaAnswers(data);
+        await setDataAnswers(data);
       } catch (error) {
         console.error(error);
       }
@@ -27,7 +27,7 @@ const Results = () => {
     getAnswers();
   }, [nameTest, answers]);
 
-  const handleTryAgane = () => {
+  const handleTryAgain = () => {
     dispatch(actionResetAnswers([]));
   };
 
@@ -37,7 +37,7 @@ const Results = () => {
         <section>
           <div className={s.container}>
             <h2 className={s.sectionTitle}>Results</h2>
-            <h3 className={s.sectionSubtitle}>[TESTING THEOSY_]</h3>
+            <h3 className={s.sectionSubtitle}>[TESTING THEORY_]</h3>
             <Diagram
               correctAnswers={dataAnswers.right}
               allAnswers={dataAnswers.total}
@@ -65,7 +65,7 @@ const Results = () => {
             </picture>
             {dataAnswers.right === dataAnswers.total && (
               <>
-                <p className={s.testResult}>Vary Good!</p>
+                <p className={s.testResult}>Very Good!</p>
                 <p className={s.testResultDescription}>Don't stop there!</p>
               </>
             )}
@@ -87,7 +87,7 @@ const Results = () => {
             <button>
               <Link
                 to={routes.TEST_VIEW}
-                onClick={handleTryAgane}
+                onClick={handleTryAgain}
                 className={s.sectionButton}
               >
                 Try again

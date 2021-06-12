@@ -5,8 +5,9 @@ const BtnPrevNext = ({ handleClick, prev, next }) => {
   return (
     <div className={s.testPage__btnPrevNext}>
       <button
+        // disabled={!prev}
         onClick={handleClick}
-        className={prev ? s.testPage__btnPrev : s.disactive}
+        className={prev ? s.testPage__btn : s.disactive}
         type="button"
         data-flag="prev"
       >
@@ -14,8 +15,9 @@ const BtnPrevNext = ({ handleClick, prev, next }) => {
         <span className={s.testPage__btnPrevNextText}> Previous question </span>
       </button>
       <button
+        // disabled={!next}
         onClick={handleClick}
-        className={next ? s.testPage__btnNext : s.disactive}
+        className={next ? s.testPage__btn : s.disactive}
         type="button"
         data-flag="next"
       >

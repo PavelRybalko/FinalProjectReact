@@ -1,21 +1,22 @@
-import { createReducer } from '@reduxjs/toolkit';
+import { createReducer, combineReducers } from '@reduxjs/toolkit';
 import {
   actionAddResult,
   actionUpdateResult,
   actionSetNameTest,
   actionResetAnswers,
-  actionGetTest,
-  actionPostTest,
+  // actionGetTest,
+  // actionPostTest,
 } from './questions-actions';
+import questionsOperations from './questions-operation';
 
-const resultQuestionsReducer = createReducer([], {
+const answers = createReducer([], {
   [actionAddResult]: (state, { payload }) => {
     const answersAdd = [...state, payload];
     return answersAdd;
   },
   [actionUpdateResult]: (state, { payload }) => {
     const answerRemove = [
-      ...state.filter(answer => answer.answerId !== payload.answerId),
+      ...state.filter(answer => answer.questionId !== payload.questionId),
       payload,
     ];
     return answerRemove;
@@ -25,26 +26,26 @@ const resultQuestionsReducer = createReducer([], {
     return resetAnswers;
   },
 });
-const setNameReducer = createReducer('', {
-  [actionSetNameTest]: (state, { payload }) => {
+
+const nameTest = createReducer('', {
+  [actionSetNameTest]: (_, { payload }) => {
     return payload;
   },
 });
-const setDataQuestions = createReducer([], {
-  [actionGetTest]: (state, { payload }) => {
+const questions = createReducer([], {
+  [questionsOperations.asyncActionGetTest.fulfilled]: (state, { payload }) => {
     return payload;
   },
 });
-const setQuestionsResult = createReducer([], {
-  [actionPostTest]: (state, { payload }) => {
-    console.log(payload, `payload setQuestionsResult`);
-    return payload;
-  },
+// export const setQuestionsResult = createReducer([], {
+//   [questionsOperations.asyncActionPostTest.fulfilled]: (state, { payload }) => {
+//     return payload;
+//   },
+// });
+const questionsReducer = combineReducers({
+  answers,
+  nameTest,
+  questions,
 });
 
-export default {
-  resultQuestionsReducer,
-  setNameReducer,
-  setDataQuestions,
-  setQuestionsResult,
-};
+export default questionsReducer;

@@ -1,11 +1,16 @@
-import { useState, useCallback, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import {
+  useState,
+  // useCallback, useEffect
+} from 'react';
+import {
+  useDispatch,
+  // useSelector
+} from 'react-redux';
 import { authOperations } from '../../redux/auth';
 import s from './AuthForm.module.css';
 import gIcon from '../../assets/icons/google-logo.png';
-import Modal from '../Modal';
-import { authSelectors } from '../../redux/auth';
-import { getActiveElement } from 'formik';
+// import Modal from '../Modal';
+// import { authSelectors } from '../../redux/auth';
 
 export default function AuthForm() {
   const [email, setEmail] = useState('');
@@ -37,34 +42,42 @@ export default function AuthForm() {
     setPassword('');
   };
 
-  const checkEmailAndPassword = (email, password) => {
+  const isEmailAndPasswordFill = (email, password) => {
     if (!email.trim() && !password.trim()) {
       return alert('Please write email and password!');
     }
     return true;
   };
 
-  const handleSignIn = event => {
+  const handleClick = event => {
     event.preventDefault();
-    if (checkEmailAndPassword(email, password)) {
-      dispatch(authOperations.logIn({ email, password }));
+    const buttonName = event.target.dataset.auth;
+    if (isEmailAndPasswordFill(email, password)) {
+      switch (buttonName) {
+        case 'login':
+          dispatch(authOperations.logIn({ email, password }));
+          return;
+        case 'reg':
+          dispatch(authOperations.register({ email, password }));
+          return;
+        default:
+          return;
+      }
     }
     reset();
   };
 
-  const handleSignUp = event => {
-    event.preventDefault();
-    if (checkEmailAndPassword(email, password)) {
-      dispatch(authOperations.register({ email, password }));
-    }
-    reset();
-  };
+  // const handleRegister = event => {
+  //   event.preventDefault();
+  //   if (isEmailAndPasswordFill(email, password)) {
+  //     dispatch(authOperations.register({ email, password }));
+  //   }
+  //   reset();
+  // };
 
   return (
-    <div className={s.forma}>
-      <p className={s.para}>
-        Для авторизации можете использовать Google Account:
-      </p>
+    <div className={s.form}>
+      <p className={s.para}>For authorization you can use Google Account:</p>
       <div className={s.btnWrapper}>
         <a href="https://final-group-project-node.herokuapp.com/auth/google">
           <button className={s.gBtn} type="submit">
@@ -73,9 +86,7 @@ export default function AuthForm() {
           <img className={s.gLogo} src={gIcon} alt={'gIcon'} />
         </a>
       </div>
-      <p className={s.secondPara}>
-        Or login to our app using e-mail and password:
-      </p>
+      <p className={s.secondPara}>Or using e-mail and password:</p>
       <form className={s.innerForm}>
         <label>
           <input
@@ -100,10 +111,10 @@ export default function AuthForm() {
           />
         </label>
         <div className={s.btnWrapperBottom}>
-          <button className={s.regBtn} onClick={handleSignIn}>
+          <button data-auth="login" className={s.regBtn} onClick={handleClick}>
             Log in
           </button>
-          <button data-auth="reg" className={s.regBtn} onClick={handleSignUp}>
+          <button data-auth="reg" className={s.regBtn} onClick={handleClick}>
             Register
           </button>
         </div>
