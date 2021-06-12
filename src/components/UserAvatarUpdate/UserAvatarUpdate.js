@@ -16,7 +16,6 @@ const UserAvatarUpdate = () => {
           data: [...uint8Array],
         });
         setLoading(false);
-        console.log(response);
       } catch (e) {
         console.error(e.message, 'function handleSubmit');
       }

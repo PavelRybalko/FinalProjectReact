@@ -32,7 +32,6 @@ const logIn = createAsyncThunk(
   'auth/loginUser',
   async ({ email, password }, { rejectWithValue }) => {
     try {
-      debugger;
       const { data } = await login({ email, password });
       setToken.set(data.accessToken);
       // localStorage.setItem('accessToken', data.accessToken);

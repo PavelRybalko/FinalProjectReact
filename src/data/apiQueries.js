@@ -15,7 +15,6 @@ const setToken = {
 
 const updateRefreshToken = async refreshToken => {
   try {
-    debugger;
     // if (e.slice(-3) !== '401') return;
     // const refreshToken = localStorage.getItem('refreshToken');
     // if (refreshToken === null) return;

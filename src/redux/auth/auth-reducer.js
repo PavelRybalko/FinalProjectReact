@@ -17,11 +17,9 @@ const accessToken = createReducer(null, {
     return payload.accessToken;
   },
   [authOperations.updateTokenByCode.fulfilled]: (_, { payload }) => {
-    debugger;
     return payload.accessToken;
   },
   // [authOperations.fetchCurrentUser.fulfilled]: (_, { payload }) => {
-  //   debugger;
   //   console.log('token reducer -', payload);
   //   return payload?.accessToken;
   // },
