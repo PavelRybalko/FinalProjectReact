@@ -6,16 +6,12 @@ const initialState = { name: null, email: null, avatarURL: null };
 const user = createReducer(initialState, {
   [authOperations.register.fulfilled]: (_, { payload }) => payload.user,
   [authOperations.fetchCurrentUser.fulfilled]: (_, { payload }) => payload.user,
-  [authOperations.logIn.fulfilled]: (_, { payload }) => {
-    return payload.user;
-  },
+  [authOperations.logIn.fulfilled]: (_, { payload }) => payload.user,
   [authOperations.logOut.fulfilled]: () => null,
 });
 
 const accessToken = createReducer(null, {
-  [authOperations.logIn.fulfilled]: (_, { payload }) => {
-    return payload.accessToken;
-  },
+  [authOperations.logIn.fulfilled]: (_, { payload }) => payload.accessToken,
   [authOperations.updateTokenByCode.fulfilled]: (_, { payload }) => {
     return payload.accessToken;
   },

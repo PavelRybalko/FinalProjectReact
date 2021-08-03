@@ -35,31 +35,28 @@ const TestPage = () => {
   }, [nameTest]);
 
   const handleTestList = e => {
+    debugger;
     const {
       target: { dataset, id, nodeName },
     } = e;
     if (nodeName !== 'LI') return;
 
-    const check = answers.some(el => el.answer !== undefined);
+    const isAnswered = answers.find(el => el.questionId === dataset.questionId);
     const newAnswer = {
-      questionId: Number(dataset.indexAnswer),
+      questionId: dataset.questionId,
       answer: dataset.answer,
-      idx: dataset.index,
+      answerId: id,
     };
-    const allLi = document.getElementsByName('check');
-    allLi.forEach(item => {
+    const allRadioButtons = document.getElementsByName('radioButton');
+    allRadioButtons.forEach(item => {
       item.classList.remove(s.item__checked);
     });
-    const currentLi = document.getElementById(id);
-    currentLi.classList.add(s.item__checked);
-    if (!check) {
-      dispatch(actionAddResult(newAnswer));
-      return;
-    }
-    if (check) {
-      dispatch(actionUpdateResult(newAnswer));
-      return;
-    }
+    const currentRadioButton = document.getElementById(id);
+    currentRadioButton.classList.add(s.item__checked);
+
+    isAnswered
+      ? dispatch(actionUpdateResult(newAnswer))
+      : dispatch(actionAddResult(newAnswer));
   };
 
   const handleNextPrevClick = e => {
@@ -68,10 +65,10 @@ const TestPage = () => {
         dataset: { flag },
       },
     } = e;
-    const allLi = document.getElementsByName('check');
+    const allRadioButtons = document.getElementsByName('radioButton');
 
     if (flag === 'next') {
-      allLi.forEach(item => {
+      allRadioButtons.forEach(item => {
         item.classList.remove(s.item__checked);
       });
       if (i === 10) {
@@ -83,7 +80,7 @@ const TestPage = () => {
       return;
     }
     if (flag === 'prev') {
-      allLi.forEach(item => {
+      allRadioButtons.forEach(item => {
         item.classList.remove(s.item__checked);
       });
       if (i === 1) {
@@ -125,7 +122,7 @@ const TestPage = () => {
               counter={i}
               handleSet={handleTestList}
               apiData={data}
-              currentAnswer={answers}
+              answers={answers}
             />
           </div>
 

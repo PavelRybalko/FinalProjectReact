@@ -1,8 +1,10 @@
 import axios from 'axios';
 import { authOperations } from '../redux/auth/';
-// http://localhost:3030
+// https://api-test-app-nodejs.herokuapp.com
+// http://localhost:3000/
 // https://final-group-project-node.herokuapp.com
-axios.defaults.baseURL = 'https://final-group-project-node.herokuapp.com';
+axios.defaults.baseURL = 'http://localhost:3001/';
+axios.defaults.withCredentials = true;
 
 const setToken = {
   set(token) {
@@ -13,21 +15,12 @@ const setToken = {
   },
 };
 
-const updateRefreshToken = async refreshToken => {
+const updateRefreshToken = async () => {
   try {
-    // if (e.slice(-3) !== '401') return;
-    // const refreshToken = localStorage.getItem('refreshToken');
-    // if (refreshToken === null) return;
-    // const {
-    //   data: { data },
-    // } = await authOperations.updateRefreshToken(refreshToken);
     const {
       data: { data },
-    } = await axios.get(`/auth/refresh-token/${refreshToken}`);
+    } = await axios.get(`/auth/refresh-token/`);
     return data;
-    // setToken.set(data.accessToken);
-    // localStorage.setItem('accessToken', data.accessToken);
-    // localStorage.setItem('refreshToken', data.refreshToken);
   } catch (e) {
     console.log(e);
   }
@@ -80,7 +73,10 @@ const registerUser = async ({ email, password }) => {
 };
 
 const login = async ({ email, password }) => {
-  const { data } = await axios.post('/auth/login', { email, password });
+  const { data } = await axios.post('/auth/login', {
+    email,
+    password,
+  });
   return data;
 };
 

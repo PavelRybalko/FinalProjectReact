@@ -34,13 +34,12 @@ function App() {
   const dispatch = useDispatch();
   const accessToken = useSelector(authSelectors.getToken);
   const isLoggedIn = useSelector(authSelectors.getIsLoggedIn);
-  const refreshToken = localStorage.getItem('refreshToken');
 
   useEffect(() => {
-    if (!refreshToken) return;
+    if (!accessToken) return;
 
     !isLoggedIn && dispatch(authOperations.fetchCurrentUser(accessToken));
-  }, [dispatch, refreshToken, accessToken, isLoggedIn]);
+  }, [dispatch, accessToken, isLoggedIn]);
 
   return (
     <BrowserRouter>

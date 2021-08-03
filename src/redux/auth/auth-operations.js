@@ -35,7 +35,6 @@ const logIn = createAsyncThunk(
       const { data } = await login({ email, password });
       setToken.set(data.accessToken);
       // localStorage.setItem('accessToken', data.accessToken);
-      localStorage.setItem('refreshToken', data.refreshToken);
       // toast.dark(`Hello dear ${email}`);
       return data;
     } catch (err) {
@@ -47,14 +46,10 @@ const logIn = createAsyncThunk(
 
 const logInGoogle = createAsyncThunk(
   'auth/loginGoogle',
-  async (
-    { email, name, picture, refreshToken, token },
-    { rejectWithValue },
-  ) => {
+  async ({ email, name, picture, token }, { rejectWithValue }) => {
     try {
       setToken.set(token);
-      // localStorage.setItem('accessToken', token);
-      localStorage.setItem('refreshToken', refreshToken);
+      localStorage.setItem('accessToken', token);
       const data = { user: { name: name, email, avatarURL: picture } };
       toast.dark(`Hello dear ${name}`);
       return data;
@@ -71,8 +66,7 @@ const logOut = createAsyncThunk(
     try {
       await logout();
       setToken.unset();
-      // localStorage.removeItem('accessToken');
-      localStorage.removeItem('refreshToken');
+      localStorage.removeItem('accessToken');
       toast.dark(`Goodbye`);
     } catch (err) {
       toast.dark(`Ups Something wrong:)`);
@@ -86,12 +80,8 @@ const updateTokenByCode = createAsyncThunk(
   async (errorMessage, { rejectWithValue }) => {
     try {
       if (errorMessage.slice(-3) !== '401') return;
-      const refreshToken = localStorage.getItem('refreshToken');
-      if (refreshToken === null) return;
-      const data = await updateRefreshToken(refreshToken);
+      const data = await updateRefreshToken();
       setToken.set(data.accessToken);
-      // localStorage.setItem('accessToken', data.accessToken);
-      localStorage.setItem('refreshToken', data.refreshToken);
     } catch (err) {
       toast.dark(`Ups Something wrong:)`);
       return rejectWithValue(err);

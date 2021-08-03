@@ -11,7 +11,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { actionResetAnswers } from '../../redux/questions/questions-actions';
 
 const Results = () => {
-  const { answers, nameTest } = useSelector(state => state);
+  const { answers, nameTest } = useSelector(state => state.questions);
   const [dataAnswers, setDataAnswers] = useState(null);
   const dispatch = useDispatch();
 

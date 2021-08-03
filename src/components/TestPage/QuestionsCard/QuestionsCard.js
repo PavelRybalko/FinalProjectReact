@@ -1,14 +1,12 @@
 import s from './QuestionCard.module.css';
 
-const QuestionsCard = ({ counter, handleSet, apiData, currentAnswer }) => {
+const QuestionsCard = ({ counter, handleSet, apiData, answers }) => {
   return (
     <ul onClick={handleSet}>
       {apiData[counter].answers.map((el, index) => {
         const resultedClass = () => {
-          if (
-            apiData[counter]?.questionId === currentAnswer[counter]?.questionId
-          ) {
-            return currentAnswer[counter]?.idx === index.toString()
+          if (apiData[counter]?.questionId === answers[counter]?.questionId) {
+            return answers[counter]?.answerId === index.toString()
               ? `${s.item} ${s.item__checked}`
               : s.item;
           } else {
@@ -18,12 +16,12 @@ const QuestionsCard = ({ counter, handleSet, apiData, currentAnswer }) => {
         return (
           <li
             key={index}
-            name="check"
+            name="radioButton"
             className={resultedClass()}
             id={index}
             data-answer={el}
-            data-index={index}
-            data-index-answer={apiData[counter].questionId}
+            // data-index={index}
+            data-question-id={apiData[counter].questionId}
           >
             {el}
           </li>

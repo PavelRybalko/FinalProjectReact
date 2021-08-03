@@ -10,21 +10,12 @@ import {
 import questionsOperations from './questions-operation';
 
 const answers = createReducer([], {
-  [actionAddResult]: (state, { payload }) => {
-    const answersAdd = [...state, payload];
-    return answersAdd;
-  },
-  [actionUpdateResult]: (state, { payload }) => {
-    const answerRemove = [
-      ...state.filter(answer => answer.questionId !== payload.questionId),
-      payload,
-    ];
-    return answerRemove;
-  },
-  [actionResetAnswers]: (state, { payload }) => {
-    const resetAnswers = payload;
-    return resetAnswers;
-  },
+  [actionAddResult]: (state, { payload }) => [...state, payload],
+  [actionUpdateResult]: (state, { payload }) => [
+    ...state.filter(answer => answer.questionId !== payload.questionId),
+    payload,
+  ],
+  [actionResetAnswers]: (_, { payload }) => payload,
 });
 
 const nameTest = createReducer('', {
